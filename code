@@ -1,0 +1,64 @@
+import time
+import random
+import string
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+
+x = 0
+while x < 50:
+    #Gen Code
+    def randStr(chars = string.ascii_uppercase + string.digits, N=12):
+        return ''.join(random.choice(chars) for _ in range(N))
+    password = randStr(chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    print(password)
+
+    driver = webdriver.Chrome('./chromedriver')
+    driver.get("https://caramilk.ca/enter-contest")
+
+    #Code Caramilk
+    time.sleep(0)
+    driver.execute_script("window.scrollTo(0, 300)")
+    caracode = driver.find_element_by_xpath("/html/body/div/main/div[2]/div/div[3]/form/div[2]/div/input")
+    caracode.click()
+    caracode.send_keys(password)
+    caracode.submit()
+
+    #Formulaire
+    fname = driver.find_element_by_xpath("/html/body/div/main/div[2]/div/div[2]/form/div/div[1]/div[1]/div/input")
+    fname.click()
+    fname.send_keys("Ilan")
+
+    lname = driver.find_element_by_xpath("/html/body/div/main/div[2]/div/div[2]/form/div/div[1]/div[2]/div/input")
+    lname.click()
+    lname.send_keys("Levy")
+
+    mail = driver.find_element_by_xpath("/html/body/div/main/div[2]/div/div[2]/form/div/div[1]/div[3]/div/input")
+    mail.click()
+    mail.send_keys("phoenixalpha44@gmail.com")
+
+    #Cocher Cases
+    b1 = driver.find_element_by_xpath("/html/body/div/main/div[2]/div/div[2]/form/div/div[2]/div[1]/label/span[1]/span/input")
+    b1.click()
+
+    b2 = driver.find_element_by_xpath("/html/body/div/main/div[2]/div/div[2]/form/div/div[2]/div[2]/label/span[1]/span/input")
+    b2.click()
+
+    b3 = driver.find_element_by_xpath("/html/body/div/main/div[2]/div/div[2]/form/div/div[2]/div[3]/label/span[1]/span/input")
+    b3.click()
+
+    #Send Formulaire
+    driver.execute_script("window.scrollTo(0, 150)")
+    submit = driver.find_element_by_xpath("/html/body/div/main/div[2]/div/div[2]/form/button")
+    submit.click()
+    time.sleep(3)
+    driver.execute_script("window.scrollTo(0, 200)")
+    try:
+        result = driver.find_element_by_xpath("/html/body/div/main/div[2]/div/div[3]/form/div[2]/p")
+        if result.is_displayed():  # this will click the element if it is there
+            print("Bad code")
+    except NoSuchElementException:
+        print("Good XCode !!!!!!!!!!!!!!!!")
+
+    time.sleep(3)
+    driver.close()
+    x += 1
